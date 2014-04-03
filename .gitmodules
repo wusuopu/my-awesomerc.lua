@@ -1,3 +1,9 @@
 [submodule "powerarrow"]
 	path = powerarrow
 	url = https://github.com/romockee/powerarrow
+[submodule "powerarrow_3.5"]
+	path = powerarrow_3.5
+	url = https://github.com/esn89/powerarrow
+[submodule "tony"]
+	path = tony
+	url = https://github.com/tony/awesome-config.git
