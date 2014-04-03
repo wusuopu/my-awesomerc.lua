@@ -1,0 +1,3 @@
+[submodule "powerarrow"]
+	path = powerarrow
+	url = https://github.com/romockee/powerarrow
