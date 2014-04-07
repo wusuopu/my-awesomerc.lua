@@ -1,3 +1,4 @@
+-- awesome 3.4
 -- Standard awesome library
 require("awful")
 require("awful.autofocus")
