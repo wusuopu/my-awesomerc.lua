@@ -13,8 +13,6 @@ require('couth.couth')
 require('couth.alsa')
 require("blingbling")
 
-require('lfs')
-
 --{{---| Java GUI's fix |---------------------------------------------------------------------------
 
 awful.util.spawn_with_shell("wmname LG3D")
@@ -48,7 +46,18 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-config_dir = lfs.currentdir()
+local function get_user_name()
+  local f, err = io.popen("whoami", 'r')
+  if f then
+    local s = f:read("*all")
+    f:close()
+    local r, n = s:gsub("\n", "")
+    return r
+  else
+    return ""
+  end
+end
+config_dir = "/home/" .. get_user_name() .. "/.config/awesome"
 themes_dir = (config_dir .. "/themes/lc_3.4")
 beautiful.init(themes_dir .. "/theme.lua")
 --beautiful.init("/usr/share/awesome/themes/default/theme.lua")
