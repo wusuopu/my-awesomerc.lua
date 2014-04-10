@@ -13,6 +13,8 @@ require('couth.couth')
 require('couth.alsa')
 require("blingbling")
 
+require('lfs')
+
 --{{---| Java GUI's fix |---------------------------------------------------------------------------
 
 awful.util.spawn_with_shell("wmname LG3D")
@@ -46,7 +48,10 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+config_dir = lfs.currentdir()
+themes_dir = (config_dir .. "/themes/lc_3.4")
+beautiful.init(themes_dir .. "/theme.lua")
+--beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal, browser and editor to run.
 terminal = "terminator"
@@ -193,14 +198,14 @@ music:buttons(awful.util.table.join(
 --{{---| MEM widget |-------------------------------------------------------------------------------
 memwidget = widget({ type = "textbox" })
 vicious.register(memwidget, vicious.widgets.mem,
-                 '<span background="#777E76" font="Terminus 12">MEM:<span color="#EEEEEE" background="#777E76">$2MB</span></span>', 20)
+                 '<span background="#777E76" font="' .. font .. '"><span color="#EEEEEE" background="#777E76">$2MB</span></span>', 20)
 memicon = widget({type = "imagebox" })
 memicon.image = image(beautiful.widget_mem)
 
 --{{---| CPU / Temperature widget |---------------------------------------------------------------------
 cpuwidget = widget({ type = "textbox" })
 vicious.register(cpuwidget, vicious.widgets.cpu,
-                 '<span background="#4B696D" font="Terminus 12">CPU:<span color="#DDDDDD">$1%</span></span>', 5)
+                 '<span background="#4B696D" font="' .. font .. '"><span color="#DDDDDD">$1%</span></span>', 5)
 cpuicon = widget({type = "imagebox" })
 cpuicon.image = image(beautiful.widget_cpu)
 
@@ -215,14 +220,14 @@ local function get_tempate(format, warg)
 end
 tempwidget = widget({ type = "textbox" })
 vicious.register(tempwidget, get_tempate,
-'<span background="#60F70A" font="Inconsolata 11"><span font="Inconsolata 11" color="#000000">$1°C</span></span>', 30)
+'<span background="#4B3B51" font="' .. font ..'"><span font="' .. font ..'" color="#60F70A">$1°C</span></span>', 30)
 tempicon = widget({type = "imagebox" })
 tempicon.image = image(beautiful.widget_temp)
 
 --{{---| FS's widget / udisks-glue menu |-----------------------------------------------------------
 fswidget = widget({ type = "textbox" })
 vicious.register(fswidget, vicious.widgets.fs,
-                 '<span background="#D0785D" font="Terminus 12"> <span color="#EEEEEE">${/ used_gb}/${/ avail_gb}GB </span></span>', 600)
+                 '<span background="#D0785D" font="' .. font ..'"><span color="#EEEEEE">${/ used_gb}/${/ avail_gb}GB</span></span>', 600)
 udisks_glue = blingbling.udisks_glue.new(beautiful.widget_hdd)
 udisks_glue:set_mount_icon(beautiful.accept)
 udisks_glue:set_umount_icon(beautiful.cancel)
@@ -237,12 +242,12 @@ baticon = widget({type = "imagebox" })
 baticon.image = image(beautiful.widget_battery)
 batwidget = widget({ type = "textbox" })
 vicious.register(batwidget, vicious.widgets.bat,
-                 '<span background="#92B0A0" font="Terminus 12"> <span color="#FFFFFF" background="#92B0A0">$2%</span> </span>', 40, "BAT0" )
+                 '<span background="#92B0A0" font="' .. font ..'"><span color="#FFFFFF" background="#92B0A0">$2%</span></span>', 40, "BAT0" )
 
 --{{---| Net widget |-------------------------------------------------------------------------------
 netwidget = widget({ type = "textbox" })
 vicious.register(netwidget, vicious.widgets.net,
-                 '<span background="#C2C2A4" font="Terminus 12"> <span color="#FFFFFF">${eth0 down_kb} ↓↑ ${eth0 up_kb}</span> </span>', 10)
+                 '<span background="#C2C2A4" font="' .. font .. '"><span color="#FFFFFF">${eth0 down_kb}↓↑ ${eth0 up_kb}</span></span>', 10)
 neticon = widget({type = "imagebox" })
 neticon.image = image(beautiful.widget_net)
 netwidget:buttons(awful.util.table.join(
@@ -252,9 +257,9 @@ netwidget:buttons(awful.util.table.join(
 spr = widget({ type = "textbox" })
 spr.text = ' '
 sprd = widget({ type = "textbox" })
-sprd.text = '<span background="#313131" font="Terminus 12"> </span>'
+sprd.text = '<span background="#313131" font="' .. font ..'"> </span>'
 spr3f = widget({ type = "textbox" })
-spr3f.text = '<span background="#777e76" font="Terminus 12"> </span>'
+spr3f.text = '<span background="#777e76" font="' .. font ..'"> </span>'
 arr1 = widget ({type = "imagebox" })
 arr1.image = image(beautiful.arr1)
 arr2 = widget ({type = "imagebox" })
@@ -316,8 +321,8 @@ for s = 1, screen.count() do
         mylayoutbox[s],
         tdwidget,   -- 日期
         s == 1 and mysystray or nil,   -- 托盘
-        --netwidget,  -- 网络
-        --neticon,
+        netwidget,  -- 网络
+        neticon,
         --arr3,  --
         batwidget,  -- 电池
         baticon,
@@ -327,16 +332,17 @@ for s = 1, screen.count() do
         --arr5,
         tempwidget, -- 温度
         tempicon,
-        --arr6,
+        arr6,
         cpuwidget,  -- CPU
         cpuicon,
-        --arr7,
-        --memwidget,  -- 内存
-        --memicon,
+        arr7,
+        memwidget,  -- 内存
+        memicon,
         --arr8,
         --music,      -- 声音
         --arr0,
-        --spr,
+        spr,
+        mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
 end
